@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>YQL - jQuery</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div id="content">
+        <h3>YQL and JSOn</h3>
+        <input type="button" value="Fetch It!">
+        <img id="spinner" src="spinner.gif" style="position:absolute;" />
+        <div id="displayContent">
+        </div>
+    </div>
+    <script>
+        $(document).ready(function(){
+            
+            $("#spinner").hide();
+            $('input[type=button]').click(function(){
+                $("#spinner").show();
+                $('input[type=button]').hide();
+                $.ajax({
+                    url:'http://query.yahooapis.com/v1/public/yql',
+                    jsonp: 'callback',
+                    dataType: 'jsonp',
+                    data: {
+                      q: 'select * from flickr.photos.interestingness(5)',
+                      format : 'json'
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        var baseURL = "http://www.flickr.com/photos/";
+                        console.log(response.query.count);
+                        var arrayImgs = [];
+                        for (var i=0; i<5; i++)
+                        var img0 = response.query.results.photo[0];
+                        var imgURL =  baseURL + img0.owner + '/' + img0.id;
+                        console.log(imgURL);
+                    },
+                    complete: function() {
+                        $("#spinner").hide();            
+                    }
+                });  
+            });           
+        });
+    </script>
+</body>
+
+</html>
