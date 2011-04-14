@@ -10,10 +10,10 @@
 <body>
 
     <div id="content">
-        <h3>YQL and JSOn</h3>
+        <h3>YQL and JSON</h3>
         <input type="button" value="Fetch It!">
         <img id="spinner" src="spinner.gif" style="position:absolute;" />
-        <div id="displayContent">
+        <div id="imgs">
         </div>
     </div>
     <script>
@@ -33,13 +33,17 @@
                     },
                     success: function(response) {
                         console.log(response);
-                        var baseURL = "http://www.flickr.com/photos/";
-                        console.log(response.query.count);
+                        var baseURL = "http://farm";
                         var arrayImgs = [];
-                        for (var i=0; i<5; i++)
-                        var img0 = response.query.results.photo[0];
-                        var imgURL =  baseURL + img0.owner + '/' + img0.id;
-                        console.log(imgURL);
+                        for (var i=0; i<5; i++){
+                            var photo = response.query.results.photo[i];
+                            arrayImgs[i] = baseURL + photo.farm+ '.static.flickr.com/'+photo.server+'/'+photo.id+'_'+
+                                            photo.secret+'.jpg';
+                        }
+                        for (var i=0; i<5; i++){
+                            console.log('<img src="'+arrayImgs[i]+'" alt="flickrimg'+ i +'"/>');
+                            $('<img src="'+arrayImgs[i]+'" alt="flickrimg'+ i +'"/>').appendTo('#imgs');
+                        }
                     },
                     complete: function() {
                         $("#spinner").hide();            
